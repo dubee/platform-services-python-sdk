@@ -42,6 +42,20 @@ class TestGlobalCatalogV1(unittest.TestCase):
         cls.service = GlobalCatalogV1.new_instance()
         assert cls.service is not None
 
+        cls.config = read_external_sources(GlobalCatalogV1.DEFAULT_SERVICE_NAME)
+        assert cls.config is not None
+        cls.authType = cls.config.get('AUTH_TYPE')
+        cls.apkKey = cls.config.get('APIKEY')
+        cls.authUrl = cls.config.get('AUTH_URL')
+        cls.url = cls.config.get('URL')
+        assert cls.authType is not None
+        print(cls.authType)
+        assert cls.apkKey is not None
+        assert cls.authUrl is not None
+        print(cls.authUrl)
+        assert cls.url is not None
+        print(cls.url)
+
         cls.defaultEntry = {
             'name': 'someName',
             'id': 'someId',
@@ -131,10 +145,11 @@ class TestGlobalCatalogV1(unittest.TestCase):
             }
         }
 
-        cls.service.delete_catalog_entry(id=cls.defaultEntry['id'])
+    def setup(self):
+        self.service.delete_catalog_entry(id=self.defaultEntry['id'])
 
     @classmethod
-    def tearDownClass(cls):
+    def tearDown(cls):
         cls.service.delete_catalog_entry(id=cls.defaultEntry['id'])
 
     def test_create_catalog_entry(self):
