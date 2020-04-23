@@ -39,22 +39,27 @@ class TestGlobalCatalogV1(unittest.TestCase):
         if not configLoaded:
             raise unittest.SkipTest('External configuration not available, skipping...')
 
-        cls.service = GlobalCatalogV1.new_instance()
-        assert cls.service is not None
+
 
         cls.config = read_external_sources(GlobalCatalogV1.DEFAULT_SERVICE_NAME)
         assert cls.config is not None
         cls.authType = cls.config.get('AUTH_TYPE')
-        cls.apkKey = cls.config.get('APIKEY')
+        cls.apiKey = cls.config.get('APIKEY')
         cls.authUrl = cls.config.get('AUTH_URL')
         cls.url = cls.config.get('URL')
         assert cls.authType is not None
+        assert cls.authType == 'iam'
         print(cls.authType)
-        assert cls.apkKey is not None
+        assert cls.apiKey is not None
         assert cls.authUrl is not None
+        assert cls.authUrl == 'https://iam.test.cloud.ibm.com/identity/token'
         print(cls.authUrl)
         assert cls.url is not None
+        assert cls.url == 'https://globalcatalog.test.cloud.ibm.com/api/v1'
         print(cls.url)
+
+        cls.service = GlobalCatalogV1.new_instance()
+        assert cls.service is not None
 
         cls.defaultEntry = {
             'name': 'someName',
