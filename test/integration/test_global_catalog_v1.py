@@ -35,14 +35,14 @@ else:
 class TestGlobalCatalogV1(unittest.TestCase):
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         if not configLoaded:
             raise unittest.SkipTest('External configuration not available, skipping...')
 
-        self.service = GlobalCatalogV1.new_instance()
-        assert self.service is not None
+        cls.service = GlobalCatalogV1.new_instance()
+        assert cls.service is not None
 
-        self.defaultEntry = {
+        cls.defaultEntry = {
             'name': 'someName',
             'id': 'someId',
             'active': False,
@@ -78,10 +78,10 @@ class TestGlobalCatalogV1(unittest.TestCase):
             }
         }
 
-        self.defaultChildEntry = {
+        cls.defaultChildEntry = {
             'name': 'someChildName',
             'id': 'someChildId',
-            'parent_id': self.defaultEntry['id'],
+            'parent_id': cls.defaultEntry['id'],
             'active': False,
             'kind': 'service',
             'disabled': False,
@@ -105,7 +105,7 @@ class TestGlobalCatalogV1(unittest.TestCase):
             }
         }
 
-        self.updatedEntry = {
+        cls.updatedEntry = {
             'name': 'someNameUpdated',
             'id': 'someId',
             'active': False,
@@ -131,11 +131,11 @@ class TestGlobalCatalogV1(unittest.TestCase):
             }
         }
 
-        self.service.delete_catalog_entry(id=self.defaultEntry['id'])
+        cls.service.delete_catalog_entry(id=cls.defaultEntry['id'])
 
     @classmethod
-    def tearDown(self):
-        self.service.delete_catalog_entry(id=self.defaultEntry['id'])
+    def tearDownClass(cls):
+        cls.service.delete_catalog_entry(id=cls.defaultEntry['id'])
 
     def test_create_catalog_entry(self):
         env = self.service.create_catalog_entry(id=self.defaultEntry['id'],
